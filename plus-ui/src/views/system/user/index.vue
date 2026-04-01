@@ -98,8 +98,13 @@
           <el-table v-loading="loading" border :data="userList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="50" align="center" />
             <el-table-column v-if="columns[0].visible" key="userId" label="用户编号" align="center" prop="userId" />
-            <el-table-column v-if="columns[1].visible" key="userName" label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true" />
+            <el-table-column v-if="columns[1].visible" key="userName" label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true">
+              <template #default="scope">
+                <span :style="{ color: getUserNameColor(scope.row.age) }">{{ scope.row.userName }}</span>
+              </template>
+            </el-table-column>
             <el-table-column v-if="columns[2].visible" key="nickName" label="用户昵称" align="center" prop="nickName" :show-overflow-tooltip="true" />
+            <el-table-column v-if="columns[7].visible" key="age" label="年龄" align="center" prop="age" width="80" />
             <el-table-column v-if="columns[3].visible" key="deptName" label="部门" align="center" prop="deptName" :show-overflow-tooltip="true" />
             <el-table-column v-if="columns[4].visible" key="phonenumber" label="手机号码" align="center" prop="phonenumber" width="120" />
             <el-table-column v-if="columns[5].visible" key="status" label="状态" align="center">
@@ -200,6 +205,13 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="年龄" prop="age">
+              <el-input-number v-model="form.age" :min="0" :max="150" placeholder="请输入年龄" style="width: 100%" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="12">
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
@@ -340,8 +352,22 @@ const columns = ref<FieldOption[]>([
   { key: 3, label: `部门`, visible: true, children: [] },
   { key: 4, label: `手机号码`, visible: true, children: [] },
   { key: 5, label: `状态`, visible: true, children: [] },
-  { key: 6, label: `创建时间`, visible: true, children: [] }
+  { key: 6, label: `创建时间`, visible: true, children: [] },
+  { key: 7, label: `年龄`, visible: true, children: [] }
 ]);
+
+// 根据年龄获取用户名颜色
+const getUserNameColor = (age: number) => {
+  if (!age || age === 0) {
+    return 'red';
+  } else if (age < 30) {
+    return 'green';
+  } else if (age >= 30 && age < 50) {
+    return 'orange';
+  } else {
+    return 'gold';
+  }
+};
 
 const deptTreeRef = ref<ElTreeInstance>();
 const queryFormRef = ref<ElFormInstance>();
@@ -364,6 +390,7 @@ const initFormData: UserForm = {
   email: undefined,
   sex: undefined,
   status: '0',
+  age: undefined,
   remark: '',
   postIds: [],
   roleIds: []
@@ -414,6 +441,11 @@ const initData: PageData<UserForm, UserQuery> = {
         message: '请输入正确的手机号码',
         trigger: 'blur'
       }
+    ],
+    age: [
+      { required: true, message: '年龄不能为空', trigger: 'blur' },
+      { type: 'number', message: '年龄必须为数字', trigger: 'blur' },
+      { type: 'number', min: 0, max: 150, message: '年龄必须介于 0 和 150 之间', trigger: 'blur' }
     ],
     roleIds: [{ required: true, message: '用户角色不能为空', trigger: 'blur' }]
   }
@@ -614,6 +646,10 @@ const handleUpdate = async (row?: UserForm) => {
   dialog.visible = true;
   dialog.title = '修改用户';
   Object.assign(form.value, data.user);
+  // 确保年龄字段正确回显，转换为number类型
+  if (data.user.age !== undefined && data.user.age !== null) {
+    form.value.age = Number(data.user.age);
+  }
   postOptions.value = data.posts;
   roleOptions.value = Array.from(
     new Map([...data.roles, ...data.user.roles].map(role => [role.roleId, role])).values()

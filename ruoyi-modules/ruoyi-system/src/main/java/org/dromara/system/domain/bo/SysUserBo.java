@@ -83,6 +83,11 @@ public class SysUserBo extends BaseEntity {
     private String status;
 
     /**
+     * 年龄
+     */
+    private Integer age;
+
+    /**
      * 备注
      */
     private String remark;

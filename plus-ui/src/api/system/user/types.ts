@@ -41,6 +41,7 @@ export interface UserVO extends BaseEntity {
   delFlag: string;
   loginIp: string;
   loginDate: string;
+  age: number;
   remark: string;
   deptName: string;
   roles: RoleVO[];
@@ -64,6 +65,7 @@ export interface UserForm {
   email?: string;
   sex?: string;
   status: string;
+  age: number;
   remark?: string;
   postIds: string[];
   roleIds: string[];
