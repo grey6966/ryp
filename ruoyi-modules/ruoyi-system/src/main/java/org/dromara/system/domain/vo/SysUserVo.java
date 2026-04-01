@@ -76,6 +76,11 @@ public class SysUserVo implements Serializable {
     private String sex;
 
     /**
+     * 年龄
+     */
+    private Integer age;
+
+    /**
      * 头像地址
      */
     @Translation(type = TransConstant.OSS_ID_TO_URL)

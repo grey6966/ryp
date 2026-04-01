@@ -36,6 +36,7 @@ export interface UserVO extends BaseEntity {
   email: string;
   phonenumber: string;
   sex: string;
+  age: number;
   avatar: string;
   status: string;
   delFlag: string;
@@ -63,6 +64,7 @@ export interface UserForm {
   phonenumber?: string;
   email?: string;
   sex?: string;
+  age: number;
   status: string;
   remark?: string;
   postIds: string[];

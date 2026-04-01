@@ -2,7 +2,9 @@ package org.dromara.system.domain.bo;
 
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -71,6 +73,13 @@ public class SysUserBo extends BaseEntity {
      * 用户性别（0男 1女 2未知）
      */
     private String sex;
+
+    /**
+     * 年龄
+     */
+    @NotNull(message = "年龄不能为空")
+    @Min(value = 0, message = "年龄不能小于0")
+    private Integer age;
 
     /**
      * 密码

@@ -63,6 +63,11 @@ public class SysUser extends TenantEntity {
     private String sex;
 
     /**
+     * 年龄
+     */
+    private Integer age;
+
+    /**
      * 用户头像
      */
     private Long avatar;

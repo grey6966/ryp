@@ -98,8 +98,13 @@
           <el-table v-loading="loading" border :data="userList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="50" align="center" />
             <el-table-column v-if="columns[0].visible" key="userId" label="用户编号" align="center" prop="userId" />
-            <el-table-column v-if="columns[1].visible" key="userName" label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true" />
+            <el-table-column v-if="columns[1].visible" key="userName" label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true">
+              <template #default="scope">
+                <span :style="{ color: getUserNameColor(scope.row.age) }">{{ scope.row.userName }}</span>
+              </template>
+            </el-table-column>
             <el-table-column v-if="columns[2].visible" key="nickName" label="用户昵称" align="center" prop="nickName" :show-overflow-tooltip="true" />
+            <el-table-column v-if="columns[7].visible" key="age" label="年龄" align="center" prop="age" width="80" />
             <el-table-column v-if="columns[3].visible" key="deptName" label="部门" align="center" prop="deptName" :show-overflow-tooltip="true" />
             <el-table-column v-if="columns[4].visible" key="phonenumber" label="手机号码" align="center" prop="phonenumber" width="120" />
             <el-table-column v-if="columns[5].visible" key="status" label="状态" align="center">
@@ -200,6 +205,13 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="年龄" prop="age">
+              <el-input-number v-model="form.age" :min="0" :max="150" placeholder="请输入年龄" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="12">
             <el-form-item label="状态">
               <el-radio-group v-model="form.status">
@@ -340,7 +352,8 @@ const columns = ref<FieldOption[]>([
   { key: 3, label: `部门`, visible: true, children: [] },
   { key: 4, label: `手机号码`, visible: true, children: [] },
   { key: 5, label: `状态`, visible: true, children: [] },
-  { key: 6, label: `创建时间`, visible: true, children: [] }
+  { key: 6, label: `创建时间`, visible: true, children: [] },
+  { key: 7, label: `年龄`, visible: true, children: [] }
 ]);
 
 const deptTreeRef = ref<ElTreeInstance>();
@@ -363,6 +376,7 @@ const initFormData: UserForm = {
   phonenumber: undefined,
   email: undefined,
   sex: undefined,
+  age: 0,
   status: '0',
   remark: '',
   postIds: [],
@@ -415,12 +429,35 @@ const initData: PageData<UserForm, UserQuery> = {
         trigger: 'blur'
       }
     ],
-    roleIds: [{ required: true, message: '用户角色不能为空', trigger: 'blur' }]
+    roleIds: [{ required: true, message: '用户角色不能为空', trigger: 'blur' }],
+    age: [
+      { required: true, message: '年龄不能为空', trigger: 'blur' },
+      { type: 'number', min: 0, message: '年龄不能小于0', trigger: 'blur' }
+    ]
   }
 };
 const data = reactive<PageData<UserForm, UserQuery>>(initData);
 
 const { queryParams, form, rules } = toRefs<PageData<UserForm, UserQuery>>(data);
+
+/**
+ * 根据年龄获取用户名颜色
+ * 年龄小于30岁 - 绿色
+ * 年龄大于等于30小于50 - 橙色
+ * 年龄大于50 - 黄色
+ * 年龄为0 - 红色
+ */
+const getUserNameColor = (age: number) => {
+  if (age === 0) {
+    return '#F56C6C';
+  } else if (age < 30) {
+    return '#67C23A';
+  } else if (age >= 30 && age < 50) {
+    return '#E6A23C';
+  } else {
+    return '#F0C940';
+  }
+};
 
 /** 通过条件过滤节点  */
 const filterNode = (value: string, data: any) => {
