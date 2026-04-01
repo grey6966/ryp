@@ -1,0 +1,81 @@
+######################################################################
+# Build Tools
+
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+######################################################################
+# IDE
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### JRebel ###
+rebel.xml
+
+### NetBeans ###
+nbproject/private/
+build/*
+nbbuild/
+nbdist/
+.nb-gradle/
+
+######################################################################
+# Others
+*.log
+*.log.gz
+*.xml.versionsBackup
+*.swp
+
+!*/build/*.java
+!*/build/*.html
+!*/build/*.xml
+
+.flattened-pom.xml
+
+######################################################################
+# Frontend (plus-ui)
+######################################################################
+
+plus-ui/.DS_Store
+plus-ui/.history
+plus-ui/node_modules/
+plus-ui/dist/
+plus-ui/npm-debug.log*
+plus-ui/yarn-debug.log*
+plus-ui/yarn-error.log*
+plus-ui/**/*.log
+
+plus-ui/tests/**/coverage/
+plus-ui/tests/e2e/reports
+plus-ui/selenium-debug.log
+
+plus-ui/.idea
+plus-ui/.vscode
+plus-ui/*.suo
+plus-ui/*.ntvs*
+plus-ui/*.njsproj
+plus-ui/*.sln
+plus-ui/*.local
+
+plus-ui/package-lock.json
+plus-ui/yarn.lock
+plus-ui/pnpm-lock.yaml
+
+plus-ui/auto-imports.d.ts
+plus-ui/components.d.ts
