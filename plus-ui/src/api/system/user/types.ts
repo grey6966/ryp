@@ -48,6 +48,7 @@ export interface UserVO extends BaseEntity {
   postIds: any;
   roleId: any;
   admin: boolean;
+  age: number;
 }
 
 /**
@@ -67,6 +68,7 @@ export interface UserForm {
   remark?: string;
   postIds: string[];
   roleIds: string[];
+  age?: number;
 }
 
 export interface UserInfoVO {

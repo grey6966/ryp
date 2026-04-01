@@ -109,6 +109,11 @@ public class SysUserVo implements Serializable {
     private String remark;
 
     /**
+     * 年龄
+     */
+    private Integer age;
+
+    /**
      * 创建时间
      */
     private Date createTime;

@@ -88,6 +88,11 @@ public class SysUserBo extends BaseEntity {
     private String remark;
 
     /**
+     * 年龄
+     */
+    private Integer age;
+
+    /**
      * 角色组
      */
     @Size(min = 1, message = "用户角色不能为空")
